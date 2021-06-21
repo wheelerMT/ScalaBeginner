@@ -48,3 +48,34 @@ within the block itself, which will be a string within the
 above example.
 Values defined within the block only have block scope, i.e. they 
 **cannot** be accessed from outside the block.
+
+## Functions
+A function is defined using the *def* keyword. Each variable passed into has to have it's *type* declared, 
+and the type of the function also has to be declared. The code snippet below is an example of concatenating a 
+string a number together
+```scala
+def aFunction(a: String, b: Int): String =
+    a + " " + b
+```
+We can call a function as we would in many other languages:
+```scala
+aFunction("Hello", 3)
+```
+
+Parameterless functions can be called using just their name:
+```scala
+def aParameterLessFunction(): Int = 42
+println(aParameterLessFunction) // Be careful when using this
+```
+
+A key point of Scala programming is **USING FUNCTIONS**, therefore if you need to use loops it is better to 
+use *recursive functions*:
+```scala
+// This is a recursive function
+  def aRepeatedFunction(aString: String, n: Int): String = {
+    if (n == 1) aString
+    else aString + aRepeatedFunction(aString, n - 1)
+  }
+```
+When declaring a recursive function, you **HAVE** to declare the type of the function (practice doing this 
+for all functions regardless of if they are recursive or not).
