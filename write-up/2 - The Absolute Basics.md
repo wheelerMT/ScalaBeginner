@@ -79,3 +79,37 @@ use *recursive functions*:
 ```
 When declaring a recursive function, you **HAVE** to declare the type of the function (practice doing this 
 for all functions regardless of if they are recursive or not).
+
+
+## Stack and Tail Recursion
+There are two types of recursion within scala: *stack* and *tail* recursion. Stack recursion occurs when the
+compiler continually uses the stack for it's computation. This has limitations since the stack has a small memory.
+For example, the factorial function below will cause a *StackOverflow* error when *n* is sufficiently large:
+```scala
+def factorial(n: Int): Int = {
+    if (n <= 1) 1
+    else {
+      println("Computing factorial of " + n + " - I first need factorial of " + (n - 1))
+      val result = n * factorial(n - 1)
+      println("Computed factorial of " + n)
+
+      result
+    }
+  }
+```
+
+To combat the error, we can use *tail recursion* which stops the stack's memory from being overloaded. To use
+*tail recursion*, the recursive call to the function must be the last expression within the function definition:
+```scala
+import scala.annotation.tailrec
+def anotherFactorial(n: Int): BigInt = {
+    @tailrec
+    def factHelper(x: Int, accumulator: BigInt): BigInt = {
+      if (x <= 1) accumulator
+      else factHelper(x - 1, x * accumulator)  // TAIL RECURSION = use recursive call as LAST expression
+    }
+
+    factHelper(n, 1)
+  }
+```
+We can use the annotation *@tailrec* so specify a function is *tail recursive*.
