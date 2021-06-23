@@ -113,3 +113,29 @@ def anotherFactorial(n: Int): BigInt = {
   }
 ```
 We can use the annotation *@tailrec* so specify a function is *tail recursive*.
+
+## Call-by-Name and Call-by-Value
+We can call functions in scala either by name or by value. For example, below is a function that is called by 
+value:
+```scala
+def calledByValue(x: Long): Unit = {
+    println("by value: " + x)
+    println("by value: " + x)
+  }
+
+calledByValue(System.nanoTime())
+```
+Here, when we call *calledByValue(System.nanoTime())* the parameter passed in (in this case *System.nanoTime()*)
+is **FIRST EVALUATED** and then passed into the function declaration. 
+
+However, we can also pass to a function by name:
+```scala
+def calledByName(x: => Long): Unit = {
+    println("by name: " + x)
+    println("by name: " + x)
+  }
+calledByName(System.nanoTime())
+```
+Here, what happens is the parameter *x* in the function becomes exactly *System.nanoTime()*. Therefore, this 
+function above will actually print two different values of the time, as opposed to the printing of the same
+times in the previous function. To pass a parameter by name, we use *=>*.
