@@ -139,3 +139,29 @@ calledByName(System.nanoTime())
 Here, what happens is the parameter *x* in the function becomes exactly *System.nanoTime()*. Therefore, this 
 function above will actually print two different values of the time, as opposed to the printing of the same
 times in the previous function. To pass a parameter by name, we use *=>*.
+
+## Smart Operations on Strings
+Scala has a plethora of operators that can act on a *String* variable. One example is an *S-interpolator*
+which allows us to call the value of variables from within a String:
+```scala
+// S-interpolators
+  val name = "David"
+  val age = 12
+  val greeting = s"Hello, my name is $name and I am $age years old."
+  val anotherGreeting = s"Hello, my name is $name and I will be turning ${age + 1} years old."
+```
+
+F-interpolators can receive printf type formats:
+```scala
+// F-interpolators
+  val speed = 1.2f
+  val myth = f"$name can eat $speed%2.2f burgers per minute."
+```
+
+The raw-interpolator can print characters literally:
+```scala
+// raw-interpolator
+  println(raw"This is a \n newline")
+  val escaped = "This is a \n newline"
+  println(raw"$escaped")
+```
