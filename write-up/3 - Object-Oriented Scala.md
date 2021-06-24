@@ -116,3 +116,60 @@ class Person(val name: String, favouriteMovie: String) {
   println(mary.apply())
   println(mary()) // equivalent
 ```
+
+## Scala Objects
+Scala objects are defined using the *object* keyword. They are a **SINGLETON INSTANCE** meaning we define them only
+once. Below is an example of creating an object and calling some of its attributes:
+```scala
+object Person { // type + its only instance
+    val N_EYES = 2
+  }
+
+  println(Person.N_EYES)
+
+  // Scala object = SINGLETON INSTANCE
+  val mary = Person
+  val john = Person
+  println(mary == john)
+```
+Since *mary* and *john* point to the same instance, the *println* statement will return *true*.
+
+A **COMPANION** is when we generate an *object* with a *class* **in the same scope**:
+```scala
+object Person { // type + its only instance
+    // "static"/"class" - level functionality
+    val N_EYES = 2
+  }
+
+  class Person {
+    // Instance-level functionality
+  }
+```
+
+We can use the *apply* method within the singleton object to create new class instances. This is called a **FACTORY 
+METHOD**:
+```scala
+object Person { // type + its only instance
+  // "static"/"class" - level functionality
+  val N_EYES = 2
+  def canFly: Boolean = false
+
+  // Factory method
+  def apply(mother: Person, father: Person) : Person = new Person("Bobbie")
+}
+
+class Person(val name: String) {
+  // Instance-level functionality
+}
+
+// Scala object = SINGLETON INSTANCE
+  val mary = new Person("Mary")
+  val john = new Person("John")
+
+  val bobbie = Person(mary, john)
+```
+A Scala application is a Scala object with this exact main method defined:
+```scala
+def main(args: Array[Strings]): Unit
+```
+We can use *extends App* when defining an object, which automatically includes the main method.
