@@ -241,3 +241,61 @@ We can prevent overriding in multiple ways:
 1. Use the final keyword on the member, which prevents any subclass from overriding that member
 2. Use the final keyword on the Class, which prevents the class from being extended.
 3. Seal the class (kw *sealed*) = extends classes in THIS FILE, prevents extension in other files
+
+Classes which contain unimplemented or *abstract* fields or methods are called *abstract* classes, and use the 
+*abstract* keyword:
+```scala
+// abstract
+  abstract class Animal {
+    val creatureType: String
+    def eat(): Unit
+  }
+```
+
+Abstract classes **cannot be instantiated**. We would essentially just extend the abstract class and override the 
+abstract fields:
+```scala
+class Dog extends Animal {
+    override val creatureType: String = "Canine"
+
+    override def eat(): Unit = println("Crunch, crunch.")
+  }
+```
+
+We can extend classes with *traits*:
+```scala
+// abstract
+  abstract class Animal {
+    val creatureType: String
+    def eat(): Unit
+  }
+
+  class Dog extends Animal {
+    override val creatureType: String = "Canine"
+
+    override def eat(): Unit = println("Crunch, crunch.")
+  }
+
+  // traits
+  trait Carnivore {
+    def eat(animal: Animal): Unit
+  }
+
+  class Crocodile extends Animal with Carnivore {
+    override val creatureType: String = "Crocodile"
+
+    override def eat(): Unit = println("Nom nom nom.")
+
+    override def eat(animal: Animal): Unit = println(s"I'm a croc and I'm eating ${animal.creatureType}")
+
+  }
+
+  val dog = new Dog
+  val croc = new Crocodile
+  croc.eat(dog)
+```
+
+Classes can have both abstract and non-abstract fields, and so can traits. The difference between traits and classes is 
+1. Traits cannot have constructor parameters.
+2. You can only extend **ONE** class, but **MULTIPLE** traits may be inherited by the same class.
+3. Traits = behaviour (what something does, carnivore etc.), abstract class = "thing" (animal etc.)
