@@ -56,3 +56,63 @@ We can initialise different constructors of a call using the *this* keyword:
 // Multiple constructors
   def this(name: String) = this(name, 0)
 ```
+
+## Object Notations
+In Scala we can use *infix/object notation* to write code in a natural language way. It works for methods which only 
+take on parameter:
+```scala
+class Person(val name: String, favouriteMovie: String) {
+    def likes(movie: String): Boolean = movie == favouriteMovie
+  }
+
+  val mary = new Person("Mary", "Inception")
+
+  println(mary.likes("Inception"))
+  println(mary likes "inception") // equivalent to above
+  // infix notation = operator notation
+```
+
+In Scala, operators such as + - etc. are not reserved, and can be used to define methods:
+```scala
+class Person(val name: String, favouriteMovie: String) {
+    def +(person: Person): String = s"${this.name} is hanging out with ${person.name}."
+  }
+
+  // "operators" in Scala
+  val mary = new Person("Mary", "Inception")
+  val tom = new Person("Tom", "Fight Club")
+  println(mary + tom)
+```
+In Scala, **ALL OPERATORS ARE METHODS**:
+```scala
+// ALL OPERATORS ARE METHODS
+  println(1 + 2)
+  println(1.+(2))
+```
+The same applies to unary operators:
+```scala
+// Prefix notation
+  val x = -1
+  val y = 1.unary_-
+```
+
+Functions that recieve no parameters can be used with postfix notation:
+```scala
+class Person(val name: String, favouriteMovie: String) {
+  def isAlive: Boolean = true
+}
+
+println(mary.isAlive)
+println(mary isAlive)
+```
+However, we typically stick with the . version.
+
+We can define an *apply()* method in a class, which allows us to call the class variable like a function:
+```scala
+// Apply
+class Person(val name: String, favouriteMovie: String) {
+  def apply(): String = s"Hi, my name is $name and I like $favouriteMovie"
+}
+  println(mary.apply())
+  println(mary()) // equivalent
+```
