@@ -173,3 +173,71 @@ A Scala application is a Scala object with this exact main method defined:
 def main(args: Array[Strings]): Unit
 ```
 We can use *extends App* when defining an object, which automatically includes the main method.
+
+## Inheritance
+Extending a class means inheriting all the non-private fields and methods.
+```scala
+class Animal {
+    def eat(): Unit = println("Nom nom!")
+  }
+
+  class Cat extends Animal
+
+  val cat = new Cat
+  cat.eat()
+```
+In this context we call Cat a *subclass* of Animal, and Animal we call a *superclass* of Cat.
+
+Using the *protected* modifier allows the use of methods inside the subclass, but it is not accessible from outside the
+class:
+```scala
+// Single class inheritance
+  class Animal {
+    protected def eat(): Unit = println("Nom nom!")
+  }
+
+  class Cat extends Animal {
+    def crunch(): Unit = {
+      eat()
+      println("Crunch crunch")
+    }
+  }
+```
+
+We can extend classes with parameters by passing in parameters to the superclass:
+```scala
+// Constructors
+  class Person(name: String, age: Int)
+  class Adult(name: String, age: Int, idCard: String) extends Person(name, age)
+```
+We can override many aspects of the superclass in the subclass using the *override* keyword:
+```scala
+// Superclass
+  class Animal {
+    val creatureType: String = "wild"
+    protected def eat(): Unit = println("Nom nom!")
+  }
+
+  // Overriding
+  class Dog(override val creatureType: String) extends Animal {
+//    override val creatureType: String = "domestic"
+    override def eat(): Unit = println("crunch, crunch")
+  }
+
+  val dog = new Dog("K9")
+  dog.eat()
+
+```
+All instances of derived class will use the overridden things when possible.
+
+The *super* keyword is used when you want to reference a method or a field from the superclass:
+```scala
+override def eat(): Unit = {
+      super.eat()
+      println("crunch, crunch")
+    }
+```
+We can prevent overriding in multiple ways:
+1. Use the final keyword on the member, which prevents any subclass from overriding that member
+2. Use the final keyword on the Class, which prevents the class from being extended.
+3. Seal the class (kw *sealed*) = extends classes in THIS FILE, prevents extension in other files
