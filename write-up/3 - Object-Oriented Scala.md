@@ -299,3 +299,87 @@ Classes can have both abstract and non-abstract fields, and so can traits. The d
 1. Traits cannot have constructor parameters.
 2. You can only extend **ONE** class, but **MULTIPLE** traits may be inherited by the same class.
 3. Traits = behaviour (what something does, carnivore etc.), abstract class = "thing" (animal etc.)
+
+## Generics
+We can define classes using *generic variables* to help us write re-usable code. For example, if we have a list class
+and we want it to accept any type of parameter, e.g. Int, String etc. then we can define the class as follows:
+```scala
+class MyList[A] {
+    // use the type A in the class definition
+  }
+  
+  val listOfIntegers = new MyList[Int]
+  val listOfString = new MyList[String]
+```
+We can declare as many generic variables in a class **AND** trait definitions as we want. 
+
+We can also define generic methods within classes and objects:
+```scala
+// Generic methods
+  object MyList {
+    def empty[A]: MyList[A] = ???
+  }
+
+  val emptyListOfIntegers = MyList.empty[Int] // MyList of type int
+```
+
+Consider the example below:
+```scala
+// Variance problem
+  class Animal
+  class cat extends Animal
+  class dog extends Animal
+```
+A question arises: does a list of cat also extend a list of animal? There are three answers to this so-called variance
+problem.
+1. Yes, List[Cat] extends List[Animal]. This is called **COVARIANCE**. To define a covariance class we use the + symbol:
+```scala
+// 1. Yes, List[Cat] extends List[Animal] = COVARIANCE
+class CovariantList[+A]
+val animal: Animal = new Cat
+val animalList: CovariantList[Animal] = new CovariantList[Cat]
+```
+2. No = **INVARIANCE**. We define this as:
+```scala
+// 2. No = INVARIANCE
+  class InvariantList[A]
+  // val invariantAnimalList: InvariantList[Animal] = new InvariantList[Cat]  ERROR
+```
+3. Hello, no! This is **CONTRAVARIANCE**:
+```scala
+// 3. Hell, no! CONTRAVARIANCE (essentially opposite of invariance)
+  class Trainer[-A]
+  // Replacing a list of cats with a list of animals:
+  val trainer: Trainer[Cat] = new Trainer[Animal]  
+```
+Bounded types allow us to use our generic classes with certain types that are a subclass of a different type of a 
+superclass of a different type:
+```scala
+// Bounded types
+class Cage[A <: Animal] (animal: A) // Class cage only accepts type parameter A which are subtypes of Animal
+val cage = new Cage(new Dog)
+
+class Car
+val newCage = new Cage(new Car)
+```
+This is an example of an **upper-bounded** type. A **lower-bounded** type only accepts something that is a **supertype** 
+of the specified argument.
+
+One final difficult question is: if we had a list of Cats, and added a Dog to that list, what happens?  
+This can be answered using the following code:
+```scala
+class MyList[+A] {
+    // use the type A in the class definition
+
+    // This is essentially saying if I add an element of type B (supertype of A) then the list
+    // will turn into a list of type B
+    def add[B >: A](element: B): MyList[B] = ???
+
+    /*
+      A = Cat
+      B = Dog = Animal
+      The list will turn from a list of Cats into a list of Animals
+     */
+  }
+```
+So, if we have a list of Cats and add a Dog to that list, the list then becomes a list of Animals, 
