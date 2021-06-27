@@ -382,4 +382,21 @@ class MyList[+A] {
      */
   }
 ```
-So, if we have a list of Cats and add a Dog to that list, the list then becomes a list of Animals, 
+So, if we have a list of Cats and add a Dog to that list, the list then becomes a list of Animals.
+
+## Abstract classes
+We can instantiate types and override fields or methods of classes or traits on the spot:
+```scala
+trait Animal {
+  def eat(): Unit
+}
+
+val predator = new Animal {
+  override def eat(): Unit = println("RAWR!")
+}
+```
+However, there are two rules to follow for this:
+1. We must pass in the required constructor arguments when needed.
+2. We must implement **ALL** abstract fields and methods.
+
+This works for traits and classes that are abstract or not.
