@@ -33,7 +33,7 @@ abstract class MyList[+A] {
 
 }
 
-object Empty extends MyList[Nothing] {
+case object Empty extends MyList[Nothing] {
   def head(): Nothing = throw new NoSuchElementException
 
   def tail(): MyList[Nothing] = throw new NoSuchElementException
@@ -55,18 +55,18 @@ object Empty extends MyList[Nothing] {
 
 }
 
-class Cons[+A](head: A, tail: MyList[A]) extends MyList[A] {
-  def head(): A = head
+case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
+  def head(): A = h
 
-  def tail(): MyList[A] = tail
+  def tail(): MyList[A] = t
 
   def isEmpty(): Boolean = false
 
   def add[B >: A](element: B): MyList[B] = new Cons(element, this)
 
   override def printElements: String = {
-    if (tail.isEmpty()) "" + head
-    else head + " " + tail.printElements
+    if (t.isEmpty()) "" + h
+    else h + " " + t.printElements
   }
 
   /*
@@ -77,8 +77,8 @@ class Cons[+A](head: A, tail: MyList[A]) extends MyList[A] {
       - new Cons(2, Empty)
    */
   def filter(predicate: Predicate[A]): MyList[A] = {
-    if (predicate.test(head)) new Cons(head, tail.filter(predicate))
-    else tail.filter(predicate)
+    if (predicate.test(h)) new Cons(h, t.filter(predicate))
+    else t.filter(predicate)
   }
 
   /*
@@ -90,7 +90,7 @@ class Cons[+A](head: A, tail: MyList[A]) extends MyList[A] {
    */
 
   def map[B](transformer: Transformer[A, B]): MyList[B] = {
-    new Cons(transformer.transform(head), tail.map(transformer))
+    new Cons(transformer.transform(h), t.map(transformer))
   }
 
   /*
@@ -99,7 +99,7 @@ class Cons[+A](head: A, tail: MyList[A]) extends MyList[A] {
     = new Cons(1, new Cons(2, Empty ++ [3, 4, 5]))
     = new Cons(1, new Cons(2, new Cons(3, new Cons(4, new Cons(5, Empty)))))
    */
-  def ++[B >: A](list: MyList[B]): MyList[B] = new Cons(head, tail ++ list)
+  def ++[B >: A](list: MyList[B]): MyList[B] = new Cons(h, t ++ list)
 
   /*
     [1, 2].flatMap(n =< [n, n+1])
@@ -108,7 +108,7 @@ class Cons[+A](head: A, tail: MyList[A]) extends MyList[A] {
     = [1, 2] ++ [2, 3] ++ Empty
    */
   def flatMap[B](transformer: Transformer[A, MyList[B]]): MyList[B] = {
-    transformer.transform(head) ++ tail.flatMap(transformer)
+    transformer.transform(h) ++ t.flatMap(transformer)
   }
 
 
@@ -125,8 +125,8 @@ trait Transformer[-A, B] {
 
 object ListTest extends App {
   val listOfIntegers: MyList[Int] = new Cons(1, new Cons(2, new Cons(3, Empty)))
-  val listOfStrings: MyList[String] = new Cons("Hello", new Cons("Scala", Empty))
-  val anotherListOfIntegers: MyList[Int] = new Cons(4, new Cons(5, Empty))
+  val listOfStrings: MyList[String] = Cons("Hello", new Cons("Scala", Empty))
+  val anotherListOfIntegers: MyList[Int] = Cons(4, new Cons(5, Empty))
 
   println(listOfIntegers.toString)
   println(listOfStrings.toString)

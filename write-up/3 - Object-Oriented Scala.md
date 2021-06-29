@@ -400,3 +400,43 @@ However, there are two rules to follow for this:
 2. We must implement **ALL** abstract fields and methods.
 
 This works for traits and classes that are abstract or not.
+
+## Case Classes
+Case classes are an exceptionally useful shorthand for defining a class and the companion object and a lot of sensisible 
+defaults in one go. We write case classes using the *case* keyword:
+```scala
+case class Person(name: String, age: Int)
+```
+Case classes have a variety of features.
+1. Class parameters are fields:
+```scala
+// 1. class parameters are fields
+  val jim = new Person("Jim", 34)
+  println(jim.name)
+```
+2. They have a sensible toString representation:
+```scala
+// 2. sensible toString
+// println(instance) = println(instance.toString)
+  println(jim.toString)  // prints Person(Jim, 34)
+```
+3. equals and hashCode implemented out of the box
+```scala
+// 3. equals and hashCode implemented out of the box
+val jim2 = new Person("Jim", 34)
+println(jim == jim2) // prints true (this would be false if case was not used)
+```
+4. Case classes have handy copy methods
+```scala
+// 4. Case classes have handy copy methods
+val jim3 = jim.copy(age=45)
+println(jim3)
+```
+5. Case classes have companion objects
+```scala
+// 5. Case classes have companion objects
+val thePerson = Person
+val mary = Person("Mary", 23)
+```
+6. Case classes are serializable.
+7. Case classes have extractor patterns = CCs can be used in PATTERN MATCHING.
