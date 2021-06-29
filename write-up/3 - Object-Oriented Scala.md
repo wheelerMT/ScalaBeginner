@@ -440,3 +440,28 @@ val mary = Person("Mary", 23)
 ```
 6. Case classes are serializable.
 7. Case classes have extractor patterns = CCs can be used in PATTERN MATCHING.
+
+## Exceptions
+Exceptions are used to help us catch errors in our code. We can throw an exception using the *throw* keyword
+```scala
+throw new NullPointerException
+```
+We can actually assign variables to exceptions:
+```scala
+val aWeirdValue: String = throw new NullPointerException
+```
+We can catch an exception using a *try, catch, finally*:
+```scala
+try {
+    // code that might fail
+    getInt(true)
+  } catch {
+    case e: RuntimeException => println("Caught a Runtime exception")
+  } finally {
+    // code that will get executed NO MATTER WHAT
+    // optional
+    // does not influence the return type of this expression
+    // use finally only for side effects
+    println("Finally")
+  }
+```
