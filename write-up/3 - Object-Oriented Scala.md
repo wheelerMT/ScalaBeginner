@@ -465,3 +465,42 @@ try {
     println("Finally")
   }
 ```
+
+## Packaging and Imports
+Files within a package can be accessed by all the files in that package. That means we can define classes in one file 
+that were declared in another, as long as they are in the same package. If we want to define a class that is defined 
+outside the package we are in, then we have to import that class using the *import* keyword **OR** by using a 
+*fully qualified name*:
+```scala
+val princess = new playground.Cinderella
+```
+We can import **ALL** files from a package using an underscore:
+```scala
+import playground._  // {Cinderella, PrinceCharming}
+```
+As best practice, only use _ if you need it.  
+We can use name aliasing to change how we reference an import in the code:
+```scala
+import playground.{Cinderella => Princess, PrinceCharming}
+
+object PackagingAndImports extends App {
+  
+  // Import the package
+  val princess = new Princess
+}
+```
+This is useful if you need to import more than once class with the same name.
+
+### Package objects
+We can only define one package object per package. *Package objects* are used to define things such as methods and 
+constants that are used throughout many files in the package.
+```scala
+package lectures
+
+package object part2oop {
+
+  def sayHello(): Unit = println("Hello, Scala!")
+  val SPEED_OF_LIGHT = 299792458
+}
+```
+These are rarely used in practices, but can be useful if you do need them.
